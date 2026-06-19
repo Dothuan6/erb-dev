@@ -1,31 +1,36 @@
 /* =============================================================================
-   XBuild ERP — Design System tokens (Material Design 3 / Material You)
+   XBuild ERP — Design System tokens (palette tối giản 3 màu)
    Nguồn chân lý DUY NHẤT về màu/typography/shape/elevation/motion/spacing.
-   Seed: primary #1A73E8 (Google Blue) · light & dark first-class.
+   CHỈ DÙNG ĐÚNG 3 MÀU:  #0f62fe (xanh) · #ffffff (trắng) · #161616 (mực).
+   Mọi vai trò màu khác (viền, hover, chữ phụ, status, scrim, shadow) đều suy ra
+   từ 3 màu này bằng độ mờ (alpha) — không thêm hue thứ tư.
+   Font: IBM Plex Sans / IBM Plex Mono · light & dark đều first-class.
 
    Quy tắc (PERMANENT DECISION):
    - KHÔNG hardcode màu/spacing trong component — mọi giá trị đọc từ token --md-sys-*.
-   - Chỉ ghép màu theo cặp tonal đúng vai trò: primary + on-primary, surface + on-surface...
+   - Status (success/warning/error/info) gom về tông xanh #0f62fe; phân biệt bằng ICON.
    - Dùng outline-variant cho divider; outline cho viền quan trọng (input).
-   - Elevation = đổi MÀU surface (tonal), shadow chỉ thêm khi cần tách nền bận.
 
    Cách bật dark mode: thêm class .dark lên <html> (ưu tiên), hoặc theo hệ thống
    qua @media (prefers-color-scheme: dark) khi chưa chọn .light/.dark thủ công.
    ============================================================================= */
 
 /* ----------------------------------------------------------------------------
-   1) LIGHT THEME — color roles
+   1) LIGHT THEME — color roles (nền trắng, mực đen, nhấn xanh)
    ---------------------------------------------------------------------------- */
 :root {
-  /* Primary — hành động chính, nav active, link */
-  --md-sys-color-primary:                 #1A73E8;
-  --md-sys-color-on-primary:              #FFFFFF;
-  --md-sys-color-primary-container:       #E8F0FE;
-  --md-sys-color-on-primary-container:    #08306B;
+  /* ===== Palette gốc — CHỈ 3 màu (dùng làm nguồn cho mọi token) ===== */
+  --c-blue:  #0f62fe;
+  --c-white: #ffffff;
+  --c-ink:   #161616;
 
-  /* Secondary & Tertiary → ALIAS sang PRIMARY (bộ màu rút gọn: chỉ primary + 3 status).
-     Giữ tên role để tương thích M3; mọi vai trò "nhấn phụ" (tonal button, chip chọn,
-     count pill, avatar) dùng tông primary. var() tự bám primary ở cả light & dark. */
+  /* Primary — hành động chính, nav active, link */
+  --md-sys-color-primary:                 var(--c-blue);
+  --md-sys-color-on-primary:              var(--c-white);
+  --md-sys-color-primary-container:       rgba(15,98,254,.12);
+  --md-sys-color-on-primary-container:    var(--c-blue);
+
+  /* Secondary & Tertiary → ALIAS sang PRIMARY. */
   --md-sys-color-secondary:               var(--md-sys-color-primary);
   --md-sys-color-on-secondary:            var(--md-sys-color-on-primary);
   --md-sys-color-secondary-container:     var(--md-sys-color-primary-container);
@@ -35,54 +40,54 @@
   --md-sys-color-tertiary-container:      var(--md-sys-color-primary-container);
   --md-sys-color-on-tertiary-container:   var(--md-sys-color-on-primary-container);
 
-  /* Error / destructive */
-  --md-sys-color-error:                   #D93025;
-  --md-sys-color-on-error:                #FFFFFF;
-  --md-sys-color-error-container:         #FCE8E6;
-  --md-sys-color-on-error-container:      #5C0A06;
+  /* Error / destructive → gom về tông xanh (phân biệt bằng icon) */
+  --md-sys-color-error:                   var(--c-blue);
+  --md-sys-color-on-error:                var(--c-white);
+  --md-sys-color-error-container:         rgba(15,98,254,.12);
+  --md-sys-color-on-error-container:      var(--c-blue);
 
   /* Surfaces */
-  --md-sys-color-background:              #FFFFFF;
-  --md-sys-color-on-background:           #202124;
-  --md-sys-color-surface:                 #FFFFFF;
-  --md-sys-color-on-surface:              #202124;
-  --md-sys-color-surface-variant:         #E8EAED;
-  --md-sys-color-on-surface-variant:      #5F6368;
+  --md-sys-color-background:              var(--c-white);
+  --md-sys-color-on-background:           var(--c-ink);
+  --md-sys-color-surface:                 var(--c-white);
+  --md-sys-color-on-surface:              var(--c-ink);
+  --md-sys-color-surface-variant:         rgba(22,22,22,.06);
+  --md-sys-color-on-surface-variant:      rgba(22,22,22,.64);
 
-  /* Surface container ladder (thay shadow làm tín hiệu độ sâu) */
-  --md-sys-color-surface-dim:             #DDE0E4;
-  --md-sys-color-surface-bright:          #FFFFFF;
-  --md-sys-color-surface-container-lowest:  #FFFFFF;
-  --md-sys-color-surface-container-low:     #F8F9FA;
-  --md-sys-color-surface-container:         #F1F3F4;
-  --md-sys-color-surface-container-high:    #ECEDEF;
-  --md-sys-color-surface-container-highest: #E6E7E9;
+  /* Surface container ladder (tín hiệu độ sâu = mực mờ dần) */
+  --md-sys-color-surface-dim:             rgba(22,22,22,.08);
+  --md-sys-color-surface-bright:          var(--c-white);
+  --md-sys-color-surface-container-lowest:  var(--c-white);
+  --md-sys-color-surface-container-low:     rgba(22,22,22,.03);
+  --md-sys-color-surface-container:         rgba(22,22,22,.05);
+  --md-sys-color-surface-container-high:    rgba(22,22,22,.08);
+  --md-sys-color-surface-container-highest: rgba(22,22,22,.11);
 
-  /* Outline — outline đạt 3:1 cho viền input; outline-variant nhạt cho divider */
-  --md-sys-color-outline:                 #74777F;
-  --md-sys-color-outline-variant:         #E0E2E5;
+  /* Outline — outline cho viền input; outline-variant nhạt cho divider */
+  --md-sys-color-outline:                 rgba(22,22,22,.30);
+  --md-sys-color-outline-variant:         rgba(22,22,22,.12);
 
   /* Inverse (snackbar, tooltip) */
-  --md-sys-color-inverse-surface:         #303033;
-  --md-sys-color-inverse-on-surface:      #F2F0F4;
-  --md-sys-color-inverse-primary:         #A9C7FF;
+  --md-sys-color-inverse-surface:         var(--c-ink);
+  --md-sys-color-inverse-on-surface:      var(--c-white);
+  --md-sys-color-inverse-primary:         var(--c-blue);
 
   /* Scrim / shadow base */
-  --md-sys-color-scrim:                   #000000;
-  --md-sys-color-shadow:                  #000000;
+  --md-sys-color-scrim:                   var(--c-ink);
+  --md-sys-color-shadow:                  var(--c-ink);
 
-  /* --- Status mở rộng (không thuộc M3 core nhưng cần cho ERP) --- */
-  --md-sys-color-success:                 #1E8E3E;
-  --md-sys-color-on-success:              #FFFFFF;
-  --md-sys-color-success-container:       #E6F4EA;
-  --md-sys-color-on-success-container:    #0B3D1A;
+  /* --- Status mở rộng (gom về xanh; phân biệt bằng icon) --- */
+  --md-sys-color-success:                 var(--c-blue);
+  --md-sys-color-on-success:              var(--c-white);
+  --md-sys-color-success-container:       rgba(15,98,254,.12);
+  --md-sys-color-on-success-container:    var(--c-blue);
 
-  --md-sys-color-warning:                 #B06000;
-  --md-sys-color-on-warning:              #FFFFFF;
-  --md-sys-color-warning-container:       #FEF7E0;
-  --md-sys-color-on-warning-container:    #4D3800;
+  --md-sys-color-warning:                 var(--c-blue);
+  --md-sys-color-on-warning:              var(--c-white);
+  --md-sys-color-warning-container:       rgba(15,98,254,.12);
+  --md-sys-color-on-warning-container:    var(--c-blue);
 
-  /* Info → ALIAS primary (không tách màu riêng) */
+  /* Info → ALIAS primary */
   --md-sys-color-info:                    var(--md-sys-color-primary);
   --md-sys-color-on-info:                 var(--md-sys-color-on-primary);
   --md-sys-color-info-container:          var(--md-sys-color-primary-container);
@@ -90,66 +95,65 @@
 }
 
 /* ----------------------------------------------------------------------------
-   2) DARK THEME — color roles
+   2) DARK THEME — color roles (nền mực, chữ trắng, nhấn xanh)
    Áp dụng khi <html class="dark">; hoặc theo hệ thống (xem mục 8).
    ---------------------------------------------------------------------------- */
 .dark {
-  --md-sys-color-primary:                 #8AB4F8;
-  --md-sys-color-on-primary:              #0A2E5C;
-  --md-sys-color-primary-container:       #1F3A60;
-  --md-sys-color-on-primary-container:    #D2E3FC;
+  --md-sys-color-primary:                 var(--c-blue);
+  --md-sys-color-on-primary:              var(--c-white);
+  --md-sys-color-primary-container:       rgba(15,98,254,.28);
+  --md-sys-color-on-primary-container:    var(--c-white);
 
-  /* secondary/tertiary tự ALIAS theo primary (định nghĩa ở :root) — không cần override dark */
+  --md-sys-color-error:                   var(--c-blue);
+  --md-sys-color-on-error:                var(--c-white);
+  --md-sys-color-error-container:         rgba(15,98,254,.28);
+  --md-sys-color-on-error-container:      var(--c-white);
 
-  --md-sys-color-error:                   #F2B8B5;
-  --md-sys-color-on-error:                #601410;
-  --md-sys-color-error-container:         #8C1D18;
-  --md-sys-color-on-error-container:      #F9DEDC;
+  --md-sys-color-background:              var(--c-ink);
+  --md-sys-color-on-background:           var(--c-white);
+  --md-sys-color-surface:                 rgba(255,255,255,.05);
+  --md-sys-color-on-surface:              var(--c-white);
+  --md-sys-color-surface-variant:         rgba(255,255,255,.10);
+  --md-sys-color-on-surface-variant:      rgba(255,255,255,.70);
 
-  --md-sys-color-background:              #1B1B1F;
-  --md-sys-color-on-background:           #E8EAED;
-  --md-sys-color-surface:                 #202124;
-  --md-sys-color-on-surface:              #E8EAED;
-  --md-sys-color-surface-variant:         #44474F;
-  --md-sys-color-on-surface-variant:      #9AA0A6;
+  --md-sys-color-surface-dim:             var(--c-ink);
+  --md-sys-color-surface-bright:          rgba(255,255,255,.10);
+  --md-sys-color-surface-container-lowest:  var(--c-ink);
+  --md-sys-color-surface-container-low:     rgba(255,255,255,.04);
+  --md-sys-color-surface-container:         rgba(255,255,255,.06);
+  --md-sys-color-surface-container-high:    rgba(255,255,255,.09);
+  --md-sys-color-surface-container-highest: rgba(255,255,255,.12);
 
-  --md-sys-color-surface-dim:             #141416;
-  --md-sys-color-surface-bright:          #3A3B3E;
-  --md-sys-color-surface-container-lowest:  #161618;
-  --md-sys-color-surface-container-low:     #202124;
-  --md-sys-color-surface-container:         #28292C;
-  --md-sys-color-surface-container-high:    #303134;
-  --md-sys-color-surface-container-highest: #3C4043;
+  --md-sys-color-outline:                 rgba(255,255,255,.30);
+  --md-sys-color-outline-variant:         rgba(255,255,255,.14);
 
-  --md-sys-color-outline:                 #8E9099;
-  --md-sys-color-outline-variant:         #3C4043;
+  --md-sys-color-inverse-surface:         var(--c-white);
+  --md-sys-color-inverse-on-surface:      var(--c-ink);
+  --md-sys-color-inverse-primary:         var(--c-blue);
 
-  --md-sys-color-inverse-surface:         #E8EAED;
-  --md-sys-color-inverse-on-surface:      #303033;
-  --md-sys-color-inverse-primary:         #1A73E8;
+  --md-sys-color-scrim:                   var(--c-ink);
+  --md-sys-color-shadow:                  var(--c-ink);
 
-  --md-sys-color-scrim:                   #000000;
-  --md-sys-color-shadow:                  #000000;
+  --md-sys-color-success:                 var(--c-blue);
+  --md-sys-color-on-success:              var(--c-white);
+  --md-sys-color-success-container:       rgba(15,98,254,.28);
+  --md-sys-color-on-success-container:    var(--c-white);
 
-  --md-sys-color-success:                 #81C995;
-  --md-sys-color-on-success:              #0A3D1B;
-  --md-sys-color-success-container:       #1E3A24;
-  --md-sys-color-on-success-container:    #C7F0CF;
-
-  --md-sys-color-warning:                 #F9AB00;
-  --md-sys-color-on-warning:              #3D2E08;
-  --md-sys-color-warning-container:       #3D2E08;
-  --md-sys-color-on-warning-container:    #FFE08C;
+  --md-sys-color-warning:                 var(--c-blue);
+  --md-sys-color-on-warning:              var(--c-white);
+  --md-sys-color-warning-container:       rgba(15,98,254,.28);
+  --md-sys-color-on-warning-container:    var(--c-white);
 
   /* info tự ALIAS theo primary */
 }
 
 /* ----------------------------------------------------------------------------
-   3) TYPOGRAPHY — M3 type scale + thang dự án (Inter / Be Vietnam Pro)
+   3) TYPOGRAPHY — type scale + thang dự án (IBM Plex Sans / IBM Plex Mono)
    ---------------------------------------------------------------------------- */
 :root {
-  --md-ref-typeface-brand: 'Be Vietnam Pro', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --md-ref-typeface-plain: 'Inter', 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --md-ref-typeface-brand: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --md-ref-typeface-plain: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --md-ref-typeface-mono:  'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
   --md-sys-typescale-font: var(--md-ref-typeface-plain);
 
   /* M3 roles (size / line-height / weight / tracking) */
@@ -202,15 +206,14 @@
 }
 
 /* ----------------------------------------------------------------------------
-   5) ELEVATION — tonal trước, shadow chỉ khi cần tách nền
+   5) ELEVATION — shadow suy ra từ màu mực (#161616), chỉ dùng khi cần tách nền
    ---------------------------------------------------------------------------- */
 :root {
-  /* Shadow chỉ dùng cho menu/dialog/drawer nổi trên nền bận */
   --md-sys-elevation-level0: none;
-  --md-sys-elevation-level1: 0 1px 2px rgba(0,0,0,.06);
-  --md-sys-elevation-level2: 0 2px 6px rgba(0,0,0,.08);
-  --md-sys-elevation-level3: 0 8px 24px rgba(0,0,0,.12);
-  --md-sys-elevation-level4: 0 10px 28px rgba(0,0,0,.14);
+  --md-sys-elevation-level1: 0 1px 2px rgba(22,22,22,.06);
+  --md-sys-elevation-level2: 0 2px 6px rgba(22,22,22,.08);
+  --md-sys-elevation-level3: 0 8px 24px rgba(22,22,22,.12);
+  --md-sys-elevation-level4: 0 10px 28px rgba(22,22,22,.14);
 
   /* Alias dự án (spec §5.2) */
   --shadow-1: var(--md-sys-elevation-level1);
@@ -269,40 +272,42 @@
    ---------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root:not(.light):not(.dark) {
-    --md-sys-color-primary:                 #8AB4F8;
-    --md-sys-color-on-primary:              #0A2E5C;
-    --md-sys-color-primary-container:       #1F3A60;
-    --md-sys-color-on-primary-container:    #D2E3FC;
-    --md-sys-color-error:                   #F2B8B5;
-    --md-sys-color-on-error:                #601410;
-    --md-sys-color-error-container:         #8C1D18;
-    --md-sys-color-on-error-container:      #F9DEDC;
-    --md-sys-color-background:              #1B1B1F;
-    --md-sys-color-on-background:           #E8EAED;
-    --md-sys-color-surface:                 #202124;
-    --md-sys-color-on-surface:              #E8EAED;
-    --md-sys-color-surface-variant:         #44474F;
-    --md-sys-color-on-surface-variant:      #9AA0A6;
-    --md-sys-color-surface-dim:             #141416;
-    --md-sys-color-surface-bright:          #3A3B3E;
-    --md-sys-color-surface-container-lowest:  #161618;
-    --md-sys-color-surface-container-low:     #202124;
-    --md-sys-color-surface-container:         #28292C;
-    --md-sys-color-surface-container-high:    #303134;
-    --md-sys-color-surface-container-highest: #3C4043;
-    --md-sys-color-outline:                 #8E9099;
-    --md-sys-color-outline-variant:         #3C4043;
-    --md-sys-color-inverse-surface:         #E8EAED;
-    --md-sys-color-inverse-on-surface:      #303033;
-    --md-sys-color-inverse-primary:         #1A73E8;
-    --md-sys-color-success:                 #81C995;
-    --md-sys-color-on-success:              #0A3D1B;
-    --md-sys-color-success-container:       #1E3A24;
-    --md-sys-color-on-success-container:    #C7F0CF;
-    --md-sys-color-warning:                 #F9AB00;
-    --md-sys-color-on-warning:              #3D2E08;
-    --md-sys-color-warning-container:       #3D2E08;
-    --md-sys-color-on-warning-container:    #FFE08C;
+    --md-sys-color-primary:                 var(--c-blue);
+    --md-sys-color-on-primary:              var(--c-white);
+    --md-sys-color-primary-container:       rgba(15,98,254,.28);
+    --md-sys-color-on-primary-container:    var(--c-white);
+    --md-sys-color-error:                   var(--c-blue);
+    --md-sys-color-on-error:                var(--c-white);
+    --md-sys-color-error-container:         rgba(15,98,254,.28);
+    --md-sys-color-on-error-container:      var(--c-white);
+    --md-sys-color-background:              var(--c-ink);
+    --md-sys-color-on-background:           var(--c-white);
+    --md-sys-color-surface:                 rgba(255,255,255,.05);
+    --md-sys-color-on-surface:              var(--c-white);
+    --md-sys-color-surface-variant:         rgba(255,255,255,.10);
+    --md-sys-color-on-surface-variant:      rgba(255,255,255,.70);
+    --md-sys-color-surface-dim:             var(--c-ink);
+    --md-sys-color-surface-bright:          rgba(255,255,255,.10);
+    --md-sys-color-surface-container-lowest:  var(--c-ink);
+    --md-sys-color-surface-container-low:     rgba(255,255,255,.04);
+    --md-sys-color-surface-container:         rgba(255,255,255,.06);
+    --md-sys-color-surface-container-high:    rgba(255,255,255,.09);
+    --md-sys-color-surface-container-highest: rgba(255,255,255,.12);
+    --md-sys-color-outline:                 rgba(255,255,255,.30);
+    --md-sys-color-outline-variant:         rgba(255,255,255,.14);
+    --md-sys-color-inverse-surface:         var(--c-white);
+    --md-sys-color-inverse-on-surface:      var(--c-ink);
+    --md-sys-color-inverse-primary:         var(--c-blue);
+    --md-sys-color-scrim:                   var(--c-ink);
+    --md-sys-color-shadow:                  var(--c-ink);
+    --md-sys-color-success:                 var(--c-blue);
+    --md-sys-color-on-success:              var(--c-white);
+    --md-sys-color-success-container:       rgba(15,98,254,.28);
+    --md-sys-color-on-success-container:    var(--c-white);
+    --md-sys-color-warning:                 var(--c-blue);
+    --md-sys-color-on-warning:              var(--c-white);
+    --md-sys-color-warning-container:       rgba(15,98,254,.28);
+    --md-sys-color-on-warning-container:    var(--c-white);
   }
 }
 
