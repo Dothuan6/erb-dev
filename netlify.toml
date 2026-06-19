@@ -6,7 +6,7 @@
 # Mở thẳng trang chủ tại URL gốc (không hiện flash redirect)
 [[redirects]]
   from = "/"
-  to = "/trang-chu.html"
+  to = "/pages/trang-chu.html"
   status = 200
 
 # Header bảo mật cơ bản
