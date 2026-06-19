@@ -189,13 +189,14 @@
    4) SHAPE — M3 corner tokens
    ---------------------------------------------------------------------------- */
 :root {
+  /* Giảm bo góc: mọi corner box = 4px (giữ full=9999 cho avatar/nút tròn/badge pill) */
   --md-sys-shape-corner-none:            0;
   --md-sys-shape-corner-extra-small:     4px;
-  --md-sys-shape-corner-small:           8px;
-  --md-sys-shape-corner-medium:          12px;
-  --md-sys-shape-corner-large:           16px;
-  --md-sys-shape-corner-large-increased: 20px;
-  --md-sys-shape-corner-extra-large:     28px;
+  --md-sys-shape-corner-small:           4px;
+  --md-sys-shape-corner-medium:          4px;
+  --md-sys-shape-corner-large:           4px;
+  --md-sys-shape-corner-large-increased: 4px;
+  --md-sys-shape-corner-extra-large:     4px;
   --md-sys-shape-corner-full:            9999px;
 
   /* Alias dự án (spec §5.2) */
