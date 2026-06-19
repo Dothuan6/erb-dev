@@ -14,6 +14,15 @@
 .dash{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
 @media (max-width:1023px){.dash{grid-template-columns:1fr}}
 .col-stack{display:flex;flex-direction:column;gap:24px}
+/* KPI thu gọn */
+.kpi-grid.compact{gap:12px}
+.kpi-grid.compact .kpi{padding:12px 14px}
+.kpi-grid.compact .kpi .value{font:var(--md-sys-typescale-title-large);font-weight:700;margin:2px 0 0}
+.kpi-grid.compact .kpi .ic{width:34px;height:34px}
+.kpi-grid.compact .kpi .ic .material-symbols-outlined{font-size:19px}
+/* phân tách Nhắc nhở trong card Việc cần làm */
+.card-subhead{display:flex;align-items:center;margin:16px 0 2px;padding-top:14px;border-top:1px solid var(--md-sys-color-outline-variant)}
+.card-subhead .card-title{font:var(--type-subtitle)}
 </style>
 </head>
 <body>
@@ -51,17 +60,21 @@
       </div>
       <div class="dash">
         <div class="col-stack">
-          <div class="kpi-grid">
-            <div class="kpi"><div class="top"><span class="label">Việc hôm nay</span><span class="ic ic-info"><span class="material-symbols-outlined">today</span></span></div><div class="value num">3</div><div class="meta">2 đang xử lý · 1 chưa bắt đầu</div></div>
-            <div class="kpi"><div class="top"><span class="label">Quá hạn</span><span class="ic ic-error"><span class="material-symbols-outlined">error</span></span></div><div class="value num">1</div><div class="meta">Cần xử lý sớm</div></div>
-            <div class="kpi"><div class="top"><span class="label">Chờ duyệt</span><span class="ic ic-warning"><span class="material-symbols-outlined">schedule</span></span></div><div class="value num">2</div><div class="meta">Phê duyệt từ workflow</div></div>
-            <div class="kpi"><div class="top"><span class="label">Nhắc nhở</span><span class="ic ic-success"><span class="material-symbols-outlined">notifications_active</span></span></div><div class="value num">4</div><div class="meta">Trong tuần này</div></div>
+          <div class="kpi-grid compact">
+            <div class="kpi"><div class="top"><span class="label">Việc hôm nay</span><span class="ic ic-info"><span class="material-symbols-outlined">today</span></span></div><div class="value num">3</div></div>
+            <div class="kpi"><div class="top"><span class="label">Quá hạn</span><span class="ic ic-error"><span class="material-symbols-outlined">error</span></span></div><div class="value num">1</div></div>
+            <div class="kpi"><div class="top"><span class="label">Chờ duyệt</span><span class="ic ic-warning"><span class="material-symbols-outlined">schedule</span></span></div><div class="value num">2</div></div>
+            <div class="kpi"><div class="top"><span class="label">Nhắc nhở</span><span class="ic ic-success"><span class="material-symbols-outlined">notifications_active</span></span></div><div class="value num">4</div></div>
           </div>
           <div class="card pad">
             <div class="card-head"><span class="card-title">Việc cần làm hôm nay</span><span class="spacer"></span><button class="btn-text btn">Xem tất cả</button></div>
-            <div class="task"><div class="body"><div class="t">Duyệt hợp đồng #HD-0231</div><div class="d"><span class="badge error"><span class="material-symbols-outlined">error</span>Quá hạn</span>· Quy trình bán hàng · Bước Chờ duyệt</div></div><div class="avatar">P</div></div>
-            <div class="task"><div class="body"><div class="t">Gọi xác nhận khách Trần Thị B</div><div class="d"><span class="badge warning"><span class="material-symbols-outlined">today</span>Hạn hôm nay</span>· CRM · Chăm sóc</div></div><div class="avatar">P</div></div>
-            <div class="task"><div class="body"><div class="t">Chuẩn bị hồ sơ bàn giao căn A-12.05</div><div class="d"><span class="badge info"><span class="material-symbols-outlined">sync</span>Đang xử lý</span>· Vận hành</div></div><div class="avatar">M</div></div>
+            <div class="task"><div class="body"><div class="t">Duyệt hợp đồng #HD-0231</div><div class="d"><span class="badge error"><span class="material-symbols-outlined">error</span>Quá hạn</span></div></div><div class="avatar">P</div></div>
+            <div class="task"><div class="body"><div class="t">Gọi xác nhận khách Trần Thị B</div><div class="d"><span class="badge warning"><span class="material-symbols-outlined">today</span>Hạn hôm nay</span></div></div><div class="avatar">P</div></div>
+            <div class="task"><div class="body"><div class="t">Chuẩn bị hồ sơ bàn giao căn A-12.05</div><div class="d"><span class="badge info"><span class="material-symbols-outlined">sync</span>Đang xử lý</span></div></div><div class="avatar">M</div></div>
+            <div class="card-subhead"><span class="card-title">Nhắc nhở sắp đến</span></div>
+            <div class="remind"><div class="bar bar-error"></div><div><div class="t">Hạn duyệt hợp đồng #HD-0231</div><div class="time">Hôm nay, 17:00</div></div></div>
+            <div class="remind"><div class="bar bar-warning"></div><div><div class="t">Họp review tuần</div><div class="time">Ngày mai, 09:00</div></div></div>
+            <div class="remind"><div class="bar bar-warning"></div><div><div class="t">Thu tiền đợt 2 — căn B-08.11</div><div class="time">20/06, 10:00</div></div></div>
           </div>
           <div class="card pad">
             <div class="card-head"><span class="card-title">Hoạt động gần đây</span><span class="spacer"></span><button class="btn-text btn">Xem tất cả</button></div>
@@ -97,12 +110,6 @@
               <div class="day">T7<span class="n num">20</span></div>
               <div class="day">CN<span class="n num">21</span></div>
             </div>
-          </div>
-          <div class="card pad">
-            <div class="card-head"><span class="card-title">Nhắc nhở sắp đến</span></div>
-            <div class="remind"><div class="bar bar-error"></div><div><div class="t">Hạn duyệt hợp đồng #HD-0231</div><div class="time">Hôm nay, 17:00</div></div></div>
-            <div class="remind"><div class="bar bar-warning"></div><div><div class="t">Họp review tuần</div><div class="time">Ngày mai, 09:00</div></div></div>
-            <div class="remind"><div class="bar bar-warning"></div><div><div class="t">Thu tiền đợt 2 — căn B-08.11</div><div class="time">20/06, 10:00</div></div></div>
           </div>
         </div>
       </div>

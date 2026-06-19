@@ -97,7 +97,7 @@ var FORMS=[
 document.getElementById('fmGrid').innerHTML=FORMS.map(function(f){
   var st=f[2]==='active'?'<span class="badge success"><span class="material-symbols-outlined">check_circle</span>Đang dùng</span>':'<span class="badge neutral"><span class="material-symbols-outlined">edit_note</span>Nháp</span>';
   var trig=f[3]
-    ? '<div class="fm-trigger"><span class="material-symbols-outlined">bolt</span><span><span class="lbl">Khi gửi → chạy: </span><b>'+f[3]+'</b></span></div>'
+    ? '<div class="fm-trigger"><span><span class="lbl">Áp dụng </span><b>'+f[3]+'</b></span></div>'
     : '<div class="fm-trigger none"><span class="material-symbols-outlined">link_off</span><span class="lbl">Chưa gắn workflow</span></div>';
   return '<div class="fm-card">'
     +'<div class="fm-top"><span class="fm-ic"><span class="material-symbols-outlined">description</span></span>'
