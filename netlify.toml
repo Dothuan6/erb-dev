@@ -1,0 +1,18 @@
+# Cấu hình deploy Netlify cho XBuild ERP (site tĩnh, không cần build)
+[build]
+  publish = "."
+  command = ""
+
+# Mở thẳng trang chủ tại URL gốc (không hiện flash redirect)
+[[redirects]]
+  from = "/"
+  to = "/trang-chu.html"
+  status = 200
+
+# Header bảo mật cơ bản
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"

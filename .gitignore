@@ -1,0 +1,14 @@
+# Hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Netlify
+.netlify/
+
+# Logs / tạm
+*.log
+node_modules/

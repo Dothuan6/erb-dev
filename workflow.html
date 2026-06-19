@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XBuild ERP — Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<style>
+.toolbar{display:flex;align-items:center;gap:10px;margin:18px 0 18px;flex-wrap:wrap}
+.toolbar-search{max-width:320px;width:100%}
+.wf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.wf-card{display:flex;flex-direction:column;background:var(--md-sys-color-surface);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-corner-large);box-shadow:var(--md-sys-elevation-level1);padding:18px;cursor:pointer;transition:box-shadow var(--duration-fast) var(--ease-enter),border-color var(--duration-fast)}
+.wf-card:hover{box-shadow:var(--md-sys-elevation-level2);border-color:var(--md-sys-color-outline)}
+.wf-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.wf-ic{width:40px;height:40px;border-radius:var(--md-sys-shape-corner-medium);background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);display:grid;place-items:center;flex:none}
+.wf-ic .material-symbols-outlined{font-size:22px}
+.wf-name{font:var(--type-body-strong);color:var(--md-sys-color-on-surface);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wf-meta-top{display:flex;align-items:center;gap:8px;margin-top:5px}
+.wf-ver{font:var(--type-caption);color:var(--md-sys-color-on-surface-variant);background:var(--md-sys-color-surface-container);border-radius:var(--md-sys-shape-corner-full);padding:1px 8px}
+.wf-menuwrap{margin-left:auto;position:relative;flex:none}
+.wf-desc{font:var(--type-body-sm);color:var(--md-sys-color-on-surface-variant);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+.wf-foot{display:flex;align-items:center;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid var(--md-sys-color-outline-variant);font:var(--type-caption);color:var(--md-sys-color-on-surface-variant)}
+.wf-foot .material-symbols-outlined{font-size:15px}
+.wf-foot .dotsep{opacity:.5}
+/* menu */
+.menu{position:absolute;top:34px;right:0;min-width:180px;background:var(--md-sys-color-surface);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-corner-medium);box-shadow:var(--md-sys-elevation-level3);padding:6px;z-index:30;display:none}
+.menu.open{display:block}
+.menu-item{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:var(--md-sys-shape-corner-small);font:var(--type-body-sm);color:var(--md-sys-color-on-surface);cursor:pointer;text-decoration:none;background:none;border:none;width:100%;text-align:left}
+.menu-item:hover{background:var(--md-sys-color-surface-container-low)}
+.menu-item .material-symbols-outlined{font-size:18px;color:var(--md-sys-color-on-surface-variant)}
+.menu-item.danger,.menu-item.danger .material-symbols-outlined{color:var(--md-sys-color-error)}
+.menu-sep{height:1px;background:var(--md-sys-color-outline-variant);margin:6px 4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">XB</div><span class="name">XBuild ERP</span></div>
+    <div class="nav-label">Tổng quan</div>
+    <a class="nav-item" href="trang-chu.html"><span class="material-symbols-outlined">home</span><span>Trang chủ</span></a>
+    <a class="nav-item" href="viec-cua-toi.html"><span class="material-symbols-outlined">check_circle</span><span>Việc của tôi</span><span class="count">5</span></a>
+    <div class="nav-label">Không gian làm việc</div>
+    <a class="nav-item" href="du-lieu.html"><span class="material-symbols-outlined">table_chart</span><span>Dữ liệu</span></a>
+    <a class="nav-item active" aria-current="page"><span class="material-symbols-outlined">account_tree</span><span>Workflow</span></a>
+    <a class="nav-item" href="bieu-mau.html"><span class="material-symbols-outlined">description</span><span>Biểu mẫu</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">folder</span><span>File</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">bar_chart</span><span>Báo cáo</span></a>
+    <div class="bottom">
+      <a class="nav-item" href="cai-dat-thanh-vien.html"><span class="material-symbols-outlined">settings</span><span>Cài đặt</span></a>
+      <a class="nav-item"><span class="material-symbols-outlined">help</span><span>Trợ giúp</span></a>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="search"><span class="material-symbols-outlined" style="font-size:18px">search</span>Tìm kiếm hoặc gõ lệnh…<span class="kbd">Ctrl K</span></div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="themeToggle" aria-label="Đổi giao diện"><span class="material-symbols-outlined">dark_mode</span></button>
+      <button class="icon-btn" aria-label="Thông báo"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="avatar" aria-label="Tài khoản Phương">PN</div>
+    </header>
+    <div class="content">
+      <div class="page-head">
+        <div><h1>Workflow</h1><div class="sub">9 quy trình · 3 đang hoạt động</div></div>
+        <div class="spacer"></div>
+        <button class="btn btn-filled"><span class="material-symbols-outlined">add</span>Tạo workflow</button>
+      </div>
+
+      <div class="toolbar">
+        <div class="search toolbar-search"><span class="material-symbols-outlined" style="font-size:18px">search</span>Tìm workflow…</div>
+        <div class="spacer" style="flex:1"></div>
+        <div class="seg"><button class="active">Tất cả</button><button>Đang hoạt động</button><button>Nháp</button></div>
+      </div>
+
+      <div class="wf-grid" id="wfGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var html=document.documentElement,tg=document.getElementById('themeToggle'),tico=tg.querySelector('.material-symbols-outlined');
+tg.addEventListener('click',function(){var d=html.classList.toggle('dark');html.classList.toggle('light',!d);tico.textContent=d?'light_mode':'dark_mode';});
+
+/* status: active | paused | draft */
+var WF=[
+ ['Đơn xin nghỉ phép','Nhân viên gửi đơn → quản lý duyệt → tự cập nhật bảng công.','active',5,'17/6/2026'],
+ ['Tiếp nhận Lead mới','Lead mới đổ về → tạo bản ghi khách → giao nhân viên chăm sóc.','active',7,'17/6/2026'],
+ ['Sau khi đặt cọc thành công','Khách đặt cọc → tạo hợp đồng và lịch thanh toán tự động.','active',9,'18/6/2026'],
+ ['Bàn giao dự án','Checklist bàn giao + thông báo cho các bên liên quan.','draft',6,'17/6/2026'],
+ ['Có Lead mới — Giao nhân viên','Tự động phân công nhân viên phụ trách khi có lead.','paused',4,'16/6/2026'],
+ ['Giải đáp thắc mắc & chăm sóc sau bán','Tiếp nhận yêu cầu hỗ trợ → phân loại → theo dõi đến khi đóng.','draft',8,'17/6/2026'],
+ ['Tạo user mới','Tạo tài khoản người dùng và gửi email kích hoạt.','draft',3,'17/6/2026'],
+ ['Nhắc thanh toán theo tiến độ','Theo dõi từng đợt thanh toán → nhắc khách trước hạn.','paused',5,'16/6/2026'],
+ ['Bàn giao sản phẩm','Lên lịch bàn giao và thu thập biên bản nghiệm thu.','draft',6,'15/6/2026']
+];
+var ST={active:['success','bolt','Đang hoạt động'],paused:['neutral','pause','Tạm dừng'],draft:['neutral','edit_note','Nháp']};
+document.getElementById('wfGrid').innerHTML=WF.map(function(w){
+  var s=ST[w[2]];
+  return '<div class="wf-card" onclick="if(!event.target.closest(\'.wf-menuwrap\'))location.href=\'workflow-editor.html\'">'
+    +'<div class="wf-top"><span class="wf-ic"><span class="material-symbols-outlined">account_tree</span></span>'
+    +'<div style="flex:1;min-width:0"><div class="wf-name">'+w[0]+'</div>'
+    +'<div class="wf-meta-top"><span class="badge '+s[0]+'"><span class="material-symbols-outlined">'+s[1]+'</span>'+s[2]+'</span></div></div>'
+    +'<div class="wf-menuwrap"><button class="icon-btn" aria-label="Tùy chọn" onclick="toggleMenu(event,this)"><span class="material-symbols-outlined">more_horiz</span></button>'
+    +'<div class="menu"><a class="menu-item" href="workflow-editor.html"><span class="material-symbols-outlined">edit</span>Chỉnh sửa</a>'
+    +'<button class="menu-item"><span class="material-symbols-outlined">content_copy</span>Nhân bản</button>'
+    +'<div class="menu-sep"></div><button class="menu-item danger"><span class="material-symbols-outlined">delete</span>Xóa</button></div></div></div>'
+    +'<div class="wf-foot"><span class="material-symbols-outlined">schedule</span>Cập nhật '+w[4]+'</div>'
+    +'</div>';
+}).join('');
+
+function closeMenus(){document.querySelectorAll('.menu.open').forEach(function(m){m.classList.remove('open');});}
+function toggleMenu(e,b){e.stopPropagation();var m=b.nextElementSibling;var o=m.classList.contains('open');closeMenus();if(!o)m.classList.add('open');}
+document.addEventListener('click',closeMenus);
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XBuild ERP — Contacts · Dữ liệu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<style>
+.crumb-link{display:inline-flex;align-items:center;gap:4px;color:var(--md-sys-color-on-surface-variant);text-decoration:none;font:var(--type-body-sm)}
+.crumb-link:hover{color:var(--md-sys-color-primary)}
+.crumb-link .material-symbols-outlined{font-size:18px}
+.crumb-sep{color:var(--md-sys-color-on-surface-variant)}
+.cnt{font:var(--type-body-sm);color:var(--md-sys-color-on-surface-variant);margin-left:6px}
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.view-sel{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:var(--md-sys-shape-corner-full);background:var(--md-sys-color-surface-container);color:var(--md-sys-color-on-surface);font:var(--type-body-sm);border:none;cursor:pointer}
+.view-sel .material-symbols-outlined{font-size:18px;color:var(--md-sys-color-on-surface-variant)}
+.addfilter{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--md-sys-shape-corner-full);background:var(--md-sys-color-surface-container);color:var(--md-sys-color-on-surface-variant);font:var(--type-body-sm);border:none;cursor:pointer}
+.addfilter:hover{background:var(--md-sys-color-surface-container-high)}
+.addfilter .material-symbols-outlined{font-size:16px}
+
+/* Google Sheets data grid: cuộn ngang, header dính, cột STT đóng băng trái */
+.gsheet-wrap{max-height:none}
+.gsheet{min-width:1080px}
+.gsheet th,.gsheet td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+.gsheet .idx{position:sticky;left:0;z-index:2}
+.gsheet thead .idx{z-index:3}
+.gsheet th.col-name,.gsheet td.col-name{min-width:170px}
+.gsheet th.col-phone{min-width:120px}
+.gsheet th.col-email{min-width:230px}
+.gsheet th.col-company{min-width:210px}
+.gsheet th.col-sale{min-width:140px}
+.gsheet th.col-status{min-width:120px}
+.gsheet th.col-date{min-width:150px}
+.gsheet .selall{display:flex;align-items:center;justify-content:center}
+.gsheet .selall input{width:16px;height:16px;accent-color:var(--md-sys-color-primary)}
+.pager{display:flex;align-items:center;gap:12px;margin-top:14px}
+.pager .info{font:var(--type-body-sm);color:var(--md-sys-color-on-surface-variant)}
+.pager .spacer{flex:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">XB</div><span class="name">XBuild ERP</span></div>
+    <div class="nav-label">Tổng quan</div>
+    <a class="nav-item" href="trang-chu.html"><span class="material-symbols-outlined">home</span><span>Trang chủ</span></a>
+    <a class="nav-item" href="viec-cua-toi.html"><span class="material-symbols-outlined">check_circle</span><span>Việc của tôi</span><span class="count">5</span></a>
+    <div class="nav-label">Không gian làm việc</div>
+    <a class="nav-item active" href="du-lieu.html" aria-current="page"><span class="material-symbols-outlined">table_chart</span><span>Dữ liệu</span></a>
+    <a class="nav-item" href="workflow.html"><span class="material-symbols-outlined">account_tree</span><span>Workflow</span></a>
+    <a class="nav-item" href="bieu-mau.html"><span class="material-symbols-outlined">description</span><span>Biểu mẫu</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">folder</span><span>File</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">bar_chart</span><span>Báo cáo</span></a>
+    <div class="bottom">
+      <a class="nav-item" href="cai-dat-thanh-vien.html"><span class="material-symbols-outlined">settings</span><span>Cài đặt</span></a>
+      <a class="nav-item"><span class="material-symbols-outlined">help</span><span>Trợ giúp</span></a>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="search"><span class="material-symbols-outlined" style="font-size:18px">search</span>Tìm kiếm hoặc gõ lệnh…<span class="kbd">Ctrl K</span></div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="themeToggle" aria-label="Đổi giao diện"><span class="material-symbols-outlined">dark_mode</span></button>
+      <button class="icon-btn" aria-label="Thông báo"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="avatar" aria-label="Tài khoản Phương">PN</div>
+    </header>
+    <div class="content">
+      <div class="page-head">
+        <div style="display:flex;align-items:center;gap:10px">
+          <a class="crumb-link" href="du-lieu.html"><span class="material-symbols-outlined">arrow_back</span>Dữ liệu</a>
+          <span class="crumb-sep">/</span>
+          <h1>Contacts</h1>
+          <span class="cnt">19 bản ghi</span>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-text"><span class="material-symbols-outlined">view_column</span>Cột</button>
+        <button class="btn btn-filled"><span class="material-symbols-outlined">add</span>Tạo mới</button>
+      </div>
+
+      <div class="toolbar">
+        <div class="seg"><button class="active">Bảng</button><button>Kanban</button></div>
+        <div class="spacer" style="flex:1"></div>
+        <button class="view-sel">Tất cả bản ghi <span class="material-symbols-outlined">expand_more</span></button>
+        <button class="btn btn-text"><span class="material-symbols-outlined">bookmark_add</span>Lưu view</button>
+      </div>
+      <div class="toolbar" style="margin-bottom:14px">
+        <button class="addfilter"><span class="material-symbols-outlined">add</span>Thêm bộ lọc</button>
+      </div>
+
+      <div class="gsheet-wrap">
+        <table class="gsheet" id="grid">
+          <thead><tr>
+            <th class="idx selall"><input type="checkbox" aria-label="Chọn tất cả"></th>
+            <th class="col-name">full_name <span class="material-symbols-outlined">unfold_more</span></th>
+            <th class="col-phone">SĐT</th>
+            <th class="col-email">email</th>
+            <th class="col-company">company name</th>
+            <th class="col-sale">assigned_sale</th>
+            <th class="col-status">Status</th>
+            <th class="col-date">Ngày tạo</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="idx">1</td><td class="col-name">Thuan Do</td><td>12343534545</td><td>thuando@tuoitresof.com</td><td>CÔNG TY TNHH TUOI TRE SOFT</td><td></td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 10:31:13</td></tr>
+            <tr><td class="idx">2</td><td class="col-name">Thuan Nguyen Quang Gia</td><td>aaaa</td><td>thuannguyen@tuoitresoft.com</td><td>CÔNG TY TNHH CUONG TIEN THINH</td><td></td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 10:31:52</td></tr>
+            <tr><td class="idx">3</td><td class="col-name">Thuan Do</td><td>1111</td><td>thuando@tuoitresof.com</td><td>CÔNG TY TNHH TUOI TRE SOFT</td><td></td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 11:44:47</td></tr>
+            <tr><td class="idx">4</td><td class="col-name">Do Van Thuan B2014705</td><td>22</td><td class="active">thuann6222@gmail.com</td><td>222</td><td></td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 11:45:37</td></tr>
+            <tr><td class="idx">5</td><td class="col-name">Thuan Do</td><td>11111</td><td>thuando@tuoitresof.com</td><td>CÔNG TY TNHH TUOI TRE SOFT</td><td></td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 11:52:18</td></tr>
+            <tr><td class="idx">6</td><td class="col-name">sdfsdfsdf</td><td>sdfsfdsdf</td><td>edwintomkaren@gmail.com</td><td>TTS</td><td></td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 11:53:53</td></tr>
+            <tr><td class="idx">7</td><td class="col-name">Lê Minh</td><td>0903123456</td><td>leminh@tuoitresoft.com</td><td>CÔNG TY CP ĐẦU TƯ AN PHÚ</td><td>Phương Nguyễn</td><td><span class="badge dot"><span class="d d-success"></span>Active</span></td><td class="num">17/06/2026 14:02:09</td></tr>
+            <tr><td class="idx">8</td><td class="col-name">Trần Thị B</td><td>0912988777</td><td>tranb@gmail.com</td><td>Hộ kinh doanh Trần B</td><td>Minh Trần</td><td><span class="badge dot"><span class="d d-warning"></span>Tiềm năng</span></td><td class="num">17/06/2026 15:20:41</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pager">
+        <span class="info">Trang 1 / 1 · 19 bản ghi</span>
+        <div class="spacer"></div>
+        <button class="btn btn-text" disabled><span class="material-symbols-outlined">chevron_left</span>Trang trước</button>
+        <button class="btn btn-text" disabled>Trang sau<span class="material-symbols-outlined">chevron_right</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var html=document.documentElement,tg=document.getElementById('themeToggle'),tico=tg.querySelector('.material-symbols-outlined');
+tg.addEventListener('click',function(){var d=html.classList.toggle('dark');html.classList.toggle('light',!d);tico.textContent=d?'light_mode':'dark_mode';});
+/* chọn ô active kiểu Google Sheets */
+document.querySelectorAll('#grid tbody td:not(.idx)').forEach(function(td){
+  td.addEventListener('click',function(){
+    document.querySelectorAll('#grid td.active').forEach(function(c){c.classList.remove('active');});
+    td.classList.add('active');
+  });
+});
+/* chọn dòng khi bấm số thứ tự */
+document.querySelectorAll('#grid tbody .idx').forEach(function(c){
+  c.addEventListener('click',function(){c.parentElement.classList.toggle('selected');});
+});
+</script>
+</body>
+</html>

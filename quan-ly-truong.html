@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XBuild ERP — Quản lý trường · Contacts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<style>
+.crumb-link{display:inline-flex;align-items:center;gap:4px;color:var(--md-sys-color-on-surface-variant);text-decoration:none;font:var(--type-body-sm)}
+.crumb-link:hover{color:var(--md-sys-color-primary)}
+.crumb-link .material-symbols-outlined{font-size:18px}
+.crumb-sep{color:var(--md-sys-color-on-surface-variant)}
+.cnt{font:var(--type-body-sm);color:var(--md-sys-color-on-surface-variant);margin-left:6px}
+
+.fields{background:var(--md-sys-color-surface);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-corner-large);overflow:hidden}
+.frow{display:flex;align-items:center;gap:14px;padding:0 14px;height:48px;border-bottom:1px solid var(--md-sys-color-outline-variant);cursor:pointer;transition:background var(--duration-fast)}
+.frow:last-child{border-bottom:none}
+.frow:hover{background:var(--md-sys-color-surface-container-low)}
+.fdrag{color:var(--md-sys-color-on-surface-variant);cursor:grab;display:flex}
+.fdrag .material-symbols-outlined{font-size:20px}
+.ftype{font:var(--type-caption);color:var(--md-sys-color-on-surface-variant);width:104px;flex:none}
+.fname{font:var(--type-body-sm);font-weight:500;color:var(--md-sys-color-on-surface);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.freq{font:var(--type-caption);color:var(--md-sys-color-on-surface-variant);background:var(--md-sys-color-surface-container);border-radius:var(--md-sys-shape-corner-full);padding:2px 8px;flex:none}
+.facts{display:flex;gap:2px;opacity:0;transition:opacity var(--duration-fast);flex:none}
+.frow:hover .facts{opacity:1}
+.facts .icon-btn{width:32px;height:32px}
+.facts .icon-btn .material-symbols-outlined{font-size:18px}
+
+.scrim{position:fixed;inset:0;background:color-mix(in srgb,var(--md-sys-color-scrim) 45%,transparent);display:none;align-items:center;justify-content:center;z-index:50;padding:24px}
+.scrim.open{display:flex}
+.dialog{width:100%;max-width:600px;background:var(--md-sys-color-surface);border-radius:var(--md-sys-shape-corner-extra-large);box-shadow:var(--md-sys-elevation-level3);overflow:hidden}
+.dialog-head{display:flex;align-items:center;padding:20px 24px 12px}
+.dialog-head h2{font:var(--type-title);color:var(--md-sys-color-on-surface)}
+.dialog-head .spacer{flex:1}
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 24px}
+.type-opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-corner-medium);background:var(--md-sys-color-surface);cursor:pointer;text-align:left;font:var(--type-body);color:var(--md-sys-color-on-surface);transition:.15s}
+.type-opt:hover{border-color:var(--md-sys-color-primary);background:color-mix(in srgb,var(--md-sys-color-primary) 6%,transparent)}
+.type-opt .ti{width:32px;height:32px;border-radius:var(--md-sys-shape-corner-small);background:var(--md-sys-color-surface-container);color:var(--md-sys-color-primary);display:grid;place-items:center;flex:none}
+.type-opt .ti .material-symbols-outlined{font-size:18px}
+.dialog-foot{display:flex;justify-content:flex-end;padding:12px 24px 20px}
+
+/* form trong drawer */
+.field input{height:36px;padding:0 12px;border-radius:var(--md-sys-shape-corner-small);border:1px solid var(--md-sys-color-outline);background:var(--md-sys-color-surface);color:var(--md-sys-color-on-surface);font:var(--type-body);outline:none;width:100%}
+.field input::placeholder{color:var(--md-sys-color-on-surface-variant)}
+.field input:focus{border-color:var(--md-sys-color-primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--md-sys-color-primary) 30%,transparent)}
+.req-star{color:var(--md-sys-color-error)}
+.checkrow{display:flex;align-items:center;gap:8px;font:var(--type-body-sm);color:var(--md-sys-color-on-surface);padding:6px 0;cursor:pointer}
+.checkrow input{width:18px;height:18px;accent-color:var(--md-sys-color-primary)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.drawer .dh .crumb .material-symbols-outlined{font-size:16px;vertical-align:middle;color:var(--md-sys-color-primary)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">XB</div><span class="name">XBuild ERP</span></div>
+    <div class="nav-label">Tổng quan</div>
+    <a class="nav-item" href="trang-chu.html"><span class="material-symbols-outlined">home</span><span>Trang chủ</span></a>
+    <a class="nav-item" href="viec-cua-toi.html"><span class="material-symbols-outlined">check_circle</span><span>Việc của tôi</span><span class="count">5</span></a>
+    <div class="nav-label">Không gian làm việc</div>
+    <a class="nav-item active" href="du-lieu.html" aria-current="page"><span class="material-symbols-outlined">table_chart</span><span>Dữ liệu</span></a>
+    <a class="nav-item" href="workflow.html"><span class="material-symbols-outlined">account_tree</span><span>Workflow</span></a>
+    <a class="nav-item" href="bieu-mau.html"><span class="material-symbols-outlined">description</span><span>Biểu mẫu</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">folder</span><span>File</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">bar_chart</span><span>Báo cáo</span></a>
+    <div class="bottom">
+      <a class="nav-item" href="cai-dat-thanh-vien.html"><span class="material-symbols-outlined">settings</span><span>Cài đặt</span></a>
+      <a class="nav-item"><span class="material-symbols-outlined">help</span><span>Trợ giúp</span></a>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="search"><span class="material-symbols-outlined" style="font-size:18px">search</span>Tìm kiếm hoặc gõ lệnh…<span class="kbd">Ctrl K</span></div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="themeToggle" aria-label="Đổi giao diện"><span class="material-symbols-outlined">dark_mode</span></button>
+      <button class="icon-btn" aria-label="Thông báo"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="avatar" aria-label="Tài khoản Phương">PN</div>
+    </header>
+    <div class="content">
+      <div class="page-head">
+        <div style="display:flex;align-items:center;gap:10px">
+          <a class="crumb-link" href="du-lieu.html"><span class="material-symbols-outlined">arrow_back</span>Dữ liệu</a>
+          <span class="crumb-sep">/</span>
+          <h1>Contacts</h1>
+          <span class="cnt">6 trường</span>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-filled" onclick="openPicker()"><span class="material-symbols-outlined">add</span>Thêm trường</button>
+      </div>
+
+      <div class="fields" id="fieldList">
+        <div class="frow" onclick="editField(this,'Văn bản')"><span class="fdrag"><span class="material-symbols-outlined">drag_indicator</span></span><span class="ftype">Văn bản</span><span class="fname">full_name</span><span class="freq">Bắt buộc</span><span class="facts"><button class="icon-btn" aria-label="Sửa" onclick="event.stopPropagation();editField(this.closest('.frow'),'Văn bản')"><span class="material-symbols-outlined">edit</span></button><button class="icon-btn" aria-label="Xóa" onclick="event.stopPropagation()"><span class="material-symbols-outlined">delete</span></button></span></div>
+        <div class="frow" onclick="editField(this,'Văn bản')"><span class="fdrag"><span class="material-symbols-outlined">drag_indicator</span></span><span class="ftype">Văn bản</span><span class="fname">SĐT</span><span class="facts"><button class="icon-btn" aria-label="Sửa" onclick="event.stopPropagation();editField(this.closest('.frow'),'Văn bản')"><span class="material-symbols-outlined">edit</span></button><button class="icon-btn" aria-label="Xóa" onclick="event.stopPropagation()"><span class="material-symbols-outlined">delete</span></button></span></div>
+        <div class="frow" onclick="editField(this,'Văn bản')"><span class="fdrag"><span class="material-symbols-outlined">drag_indicator</span></span><span class="ftype">Văn bản</span><span class="fname">email</span><span class="facts"><button class="icon-btn" aria-label="Sửa" onclick="event.stopPropagation();editField(this.closest('.frow'),'Văn bản')"><span class="material-symbols-outlined">edit</span></button><button class="icon-btn" aria-label="Xóa" onclick="event.stopPropagation()"><span class="material-symbols-outlined">delete</span></button></span></div>
+        <div class="frow" onclick="editField(this,'Văn bản')"><span class="fdrag"><span class="material-symbols-outlined">drag_indicator</span></span><span class="ftype">Văn bản</span><span class="fname">company_name</span><span class="facts"><button class="icon-btn" aria-label="Sửa" onclick="event.stopPropagation();editField(this.closest('.frow'),'Văn bản')"><span class="material-symbols-outlined">edit</span></button><button class="icon-btn" aria-label="Xóa" onclick="event.stopPropagation()"><span class="material-symbols-outlined">delete</span></button></span></div>
+        <div class="frow" onclick="editField(this,'Văn bản')"><span class="fdrag"><span class="material-symbols-outlined">drag_indicator</span></span><span class="ftype">Văn bản</span><span class="fname">assigned_sale</span><span class="facts"><button class="icon-btn" aria-label="Sửa" onclick="event.stopPropagation();editField(this.closest('.frow'),'Văn bản')"><span class="material-symbols-outlined">edit</span></button><button class="icon-btn" aria-label="Xóa" onclick="event.stopPropagation()"><span class="material-symbols-outlined">delete</span></button></span></div>
+        <div class="frow" onclick="editField(this,'Trạng thái')"><span class="fdrag"><span class="material-symbols-outlined">drag_indicator</span></span><span class="ftype">Trạng thái</span><span class="fname">Status</span><span class="facts"><button class="icon-btn" aria-label="Sửa" onclick="event.stopPropagation();editField(this.closest('.frow'),'Trạng thái')"><span class="material-symbols-outlined">edit</span></button><button class="icon-btn" aria-label="Xóa" onclick="event.stopPropagation()"><span class="material-symbols-outlined">delete</span></button></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIALOG: Chọn loại trường -->
+<div class="scrim" id="pickerScrim">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+    <div class="dialog-head"><h2 id="pickerTitle">Chọn loại trường</h2><div class="spacer"></div><button class="icon-btn" aria-label="Đóng" onclick="closePicker()"><span class="material-symbols-outlined">close</span></button></div>
+    <div class="type-grid" id="typeGrid"></div>
+    <div class="dialog-foot"><button class="btn btn-text" onclick="closePicker()">Hủy</button></div>
+  </div>
+</div>
+
+<!-- DRAWER: Thêm / Chỉnh sửa trường (sidebar) -->
+<aside class="drawer" id="fieldDrawer" role="dialog" aria-modal="false" aria-labelledby="fdTitle">
+  <div class="dh">
+    <h2 id="fdTitle">Thêm trường</h2>
+    <div class="crumb"><span class="material-symbols-outlined" id="fdIcon">text_fields</span> <span id="fdType">Văn bản</span></div>
+    <button class="icon-btn" aria-label="Đóng" onclick="closeDrawer()" style="position:absolute;top:14px;right:14px"><span class="material-symbols-outlined">close</span></button>
+  </div>
+  <div class="dbody">
+    <div class="field"><label>Tên trường <span class="req-star">*</span></label><input id="fdName" placeholder="Nhập tên trường…"></div>
+    <label class="checkrow"><input type="checkbox">Bắt buộc</label>
+    <label class="checkrow" style="margin-bottom:8px"><input type="checkbox">Duy nhất</label>
+    <div class="field" id="cfgText"><label>Độ dài tối đa</label><input placeholder="Không giới hạn"></div>
+    <div class="two-col" id="cfgNumber" style="display:none">
+      <div class="field"><label>Giá trị nhỏ nhất</label><input placeholder="Không giới hạn"></div>
+      <div class="field"><label>Giá trị lớn nhất</label><input placeholder="Không giới hạn"></div>
+    </div>
+    <div class="field" id="cfgOptions" style="display:none"><label>Tùy chọn (mỗi dòng một giá trị)</label><input placeholder="Mới, Đang chăm, Đã chốt…"></div>
+  </div>
+  <div class="dfoot">
+    <button class="btn btn-text" onclick="closeDrawer()">Hủy</button>
+    <button class="btn btn-filled" onclick="closeDrawer()">Lưu</button>
+  </div>
+</aside>
+
+<script>
+var html=document.documentElement,tg=document.getElementById('themeToggle'),tico=tg.querySelector('.material-symbols-outlined');
+tg.addEventListener('click',function(){var d=html.classList.toggle('dark');html.classList.toggle('light',!d);tico.textContent=d?'light_mode':'dark_mode';});
+
+var TYPES=[
+ ['text_fields','Văn bản'],['notes','Văn bản dài'],['tag','Số'],['payments','Tiền tệ'],
+ ['calendar_today','Ngày'],['event','Ngày giờ'],['radio_button_checked','Lựa chọn đơn'],['library_add_check','Lựa chọn nhiều'],
+ ['label','Trạng thái'],['check_box','Hộp kiểm'],['person','Người dùng'],['attach_file','Tệp đính kèm'],
+ ['sync_alt','Liên kết'],['account_tree','Đường dẫn']
+];
+var ICONS={};TYPES.forEach(function(t){ICONS[t[1]]=t[0];});
+document.getElementById('typeGrid').innerHTML=TYPES.map(function(t){return '<button class="type-opt" onclick="pickType(\''+t[1]+'\')"><span class="ti"><span class="material-symbols-outlined">'+t[0]+'</span></span>'+t[1]+'</button>';}).join('');
+
+var pickerScrim=document.getElementById('pickerScrim'),drawer=document.getElementById('fieldDrawer');
+function openPicker(){pickerScrim.classList.add('open');}
+function closePicker(){pickerScrim.classList.remove('open');}
+function showCfg(type){
+  var isNum=(type==='Số'||type==='Tiền tệ');
+  var isOpt=(type==='Lựa chọn đơn'||type==='Lựa chọn nhiều'||type==='Trạng thái');
+  document.getElementById('cfgText').style.display=(!isNum&&!isOpt)?'flex':'none';
+  document.getElementById('cfgNumber').style.display=isNum?'grid':'none';
+  document.getElementById('cfgOptions').style.display=isOpt?'flex':'none';
+}
+function setType(type){
+  document.getElementById('fdType').textContent=type;
+  document.getElementById('fdIcon').textContent=ICONS[type]||'text_fields';
+  showCfg(type);
+}
+function pickType(type){
+  closePicker();
+  document.getElementById('fdTitle').textContent='Thêm trường';
+  document.getElementById('fdName').value='';
+  setType(type);
+  drawer.classList.add('open');
+  setTimeout(function(){document.getElementById('fdName').focus();},80);
+}
+function editField(row,type){
+  if(window.event && window.event.target.closest('.facts') && window.event.target.closest('.icon-btn') && window.event.target.closest('.icon-btn').getAttribute('aria-label')==='Xóa') return;
+  document.getElementById('fdTitle').textContent='Chỉnh sửa trường';
+  document.getElementById('fdName').value=row.querySelector('.fname').textContent;
+  setType(type);
+  drawer.classList.add('open');
+}
+function closeDrawer(){drawer.classList.remove('open');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePicker();closeDrawer();}});
+pickerScrim.addEventListener('click',function(e){if(e.target===pickerScrim)closePicker();});
+</script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XBuild ERP — Sửa biểu mẫu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<style>
+.crumb-link{display:inline-flex;align-items:center;gap:4px;color:var(--md-sys-color-on-surface-variant);text-decoration:none;font:var(--type-body-sm)}
+.crumb-link:hover{color:var(--md-sys-color-primary)}
+.crumb-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--md-sys-color-on-surface-variant)}
+.builder{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:24px;align-items:start}
+@media (max-width:1100px){.builder{grid-template-columns:1fr}}
+.card.pad{padding:20px}
+.sec-head{display:flex;align-items:center;margin-bottom:14px}
+.sec-head .spacer{flex:1}
+/* general settings */
+.fb-trigger{display:flex;align-items:center;gap:8px;background:var(--md-sys-color-surface-container-low);border-radius:var(--md-sys-shape-corner-medium);padding:10px 12px;font:var(--type-body-sm);margin-top:4px}
+.fb-trigger .material-symbols-outlined{font-size:18px;color:var(--md-sys-color-primary)}
+.fb-trigger .lbl{color:var(--md-sys-color-on-surface-variant)}
+/* accordion field list */
+.fb-list{display:flex;flex-direction:column;gap:8px}
+.fb-field{border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-corner-medium);background:var(--md-sys-color-surface);overflow:hidden}
+.fb-field.open{border-color:var(--md-sys-color-primary)}
+.fb-h{display:flex;align-items:center;gap:12px;padding:0 12px;height:52px;cursor:pointer;transition:background var(--duration-fast)}
+.fb-h:hover{background:var(--md-sys-color-surface-container-low)}
+.fb-drag{color:var(--md-sys-color-on-surface-variant);display:flex;cursor:grab;flex:none}
+.fb-drag .material-symbols-outlined{font-size:20px}
+.fb-tic{width:28px;height:28px;border-radius:var(--md-sys-shape-corner-small);background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);display:grid;place-items:center;flex:none}
+.fb-tic .material-symbols-outlined{font-size:16px}
+.fb-nm{font:var(--type-body-sm);font-weight:500;color:var(--md-sys-color-on-surface);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fb-ty{font:var(--type-caption);color:var(--md-sys-color-on-surface-variant);flex:none}
+.fb-req{font:var(--type-caption);color:var(--md-sys-color-primary);background:var(--md-sys-color-primary-container);border-radius:var(--md-sys-shape-corner-full);padding:1px 8px;flex:none}
+.fb-del{flex:none;opacity:0;transition:opacity var(--duration-fast)}
+.fb-h:hover .fb-del{opacity:1}
+.fb-chev{color:var(--md-sys-color-on-surface-variant);display:flex;flex:none;transition:transform var(--duration-fast)}
+.fb-field.open .fb-chev{transform:rotate(180deg)}
+.fb-b{padding:16px;border-top:1px solid var(--md-sys-color-outline-variant);display:none}
+.fb-field.open .fb-b{display:block}
+.fb-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{font:var(--type-caption);color:var(--md-sys-color-on-surface-variant)}
+.field input,.field select,.field textarea{padding:9px 12px;border-radius:var(--md-sys-shape-corner-small);border:1px solid var(--md-sys-color-outline);background:var(--md-sys-color-surface);color:var(--md-sys-color-on-surface);font:var(--type-body);outline:none;width:100%;font-family:var(--md-ref-typeface-plain)}
+.field input.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--md-sys-color-primary);box-shadow:0 0 0 2px color-mix(in srgb,var(--md-sys-color-primary) 30%,transparent)}
+.checkrow{display:flex;align-items:center;gap:8px;font:var(--type-body-sm);cursor:pointer}
+.checkrow input{width:18px;height:18px;accent-color:var(--md-sys-color-primary)}
+/* preview */
+.pv-wrap{position:sticky;top:78px}
+.pv-label{font:var(--type-overline);letter-spacing:var(--type-overline-tracking);text-transform:uppercase;color:var(--md-sys-color-on-surface-variant);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pv-card{background:var(--md-sys-color-surface);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--md-sys-shape-corner-large);box-shadow:var(--md-sys-elevation-level1);padding:24px}
+.pv-title{font:var(--type-title);color:var(--md-sys-color-on-surface)}
+.pv-sub{font:var(--type-body-sm);color:var(--md-sys-color-on-surface-variant);margin:4px 0 18px}
+.pv-field{margin-bottom:16px}
+.pv-field>label{display:block;font:var(--type-body-sm);font-weight:500;color:var(--md-sys-color-on-surface);margin-bottom:6px}
+.pv-field .star{color:var(--md-sys-color-error)}
+.pv-field input,.pv-field textarea{width:100%;padding:10px 12px;border-radius:var(--md-sys-shape-corner-small);border:1px solid var(--md-sys-color-outline);background:var(--md-sys-color-surface);color:var(--md-sys-color-on-surface);font:var(--type-body);outline:none}
+.pv-field input::placeholder{color:var(--md-sys-color-on-surface-variant)}
+.pv-opt{display:flex;align-items:center;gap:8px;padding:5px 0;font:var(--type-body-sm)}
+.pv-opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--md-sys-color-outline);flex:none}
+.pv-submit{width:100%;height:44px;border:none;border-radius:var(--md-sys-shape-corner-full);background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary);font:var(--md-sys-typescale-label-large);cursor:pointer;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">XB</div><span class="name">XBuild ERP</span></div>
+    <div class="nav-label">Tổng quan</div>
+    <a class="nav-item" href="trang-chu.html"><span class="material-symbols-outlined">home</span><span>Trang chủ</span></a>
+    <a class="nav-item" href="viec-cua-toi.html"><span class="material-symbols-outlined">check_circle</span><span>Việc của tôi</span><span class="count">5</span></a>
+    <div class="nav-label">Không gian làm việc</div>
+    <a class="nav-item" href="du-lieu.html"><span class="material-symbols-outlined">table_chart</span><span>Dữ liệu</span></a>
+    <a class="nav-item" href="workflow.html"><span class="material-symbols-outlined">account_tree</span><span>Workflow</span></a>
+    <a class="nav-item active" href="bieu-mau.html" aria-current="page"><span class="material-symbols-outlined">description</span><span>Biểu mẫu</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">folder</span><span>File</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">bar_chart</span><span>Báo cáo</span></a>
+    <div class="bottom">
+      <a class="nav-item" href="cai-dat-thanh-vien.html"><span class="material-symbols-outlined">settings</span><span>Cài đặt</span></a>
+      <a class="nav-item"><span class="material-symbols-outlined">help</span><span>Trợ giúp</span></a>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <a class="crumb-link" href="bieu-mau.html"><span class="material-symbols-outlined">arrow_back</span>Biểu mẫu</a>
+        <span style="color:var(--md-sys-color-on-surface-variant)">/</span>
+        <span style="font:var(--type-subtitle);color:var(--md-sys-color-on-surface)">Tạo user</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-text" onclick="location.href='bieu-mau.html'">Hủy</button>
+      <button class="btn btn-filled" onclick="location.href='bieu-mau.html'"><span class="material-symbols-outlined">save</span>Lưu cấu hình</button>
+      <button class="icon-btn" id="themeToggle" aria-label="Đổi giao diện"><span class="material-symbols-outlined">dark_mode</span></button>
+    </header>
+    <div class="content">
+      <div class="builder">
+        <!-- LEFT: builder -->
+        <div>
+          <div class="card pad" style="margin-bottom:16px">
+            <div class="fb-grid2">
+              <div class="field"><label>Tiêu đề biểu mẫu</label><input id="setTitle" value="Tạo user"></div>
+              <div class="field"><label>Mã biểu mẫu</label><input class="mono" value="cmqhgt1jp00nx…" readonly></div>
+            </div>
+            <div class="field" style="margin-bottom:0"><label>Lời chào hiển thị đầu form</label><input id="setDesc" value="Vui lòng hoàn thành thông tin bên dưới để gửi yêu cầu."></div>
+            <div class="fb-trigger"><span class="material-symbols-outlined">bolt</span><span class="lbl">Khi gửi → chạy:</span> <b>Tạo user mới</b></div>
+          </div>
+
+          <div class="card pad">
+            <div class="sec-head"><span class="card-title">Trường dữ liệu</span><span class="cnt" id="fcount" style="margin-left:8px;font:var(--type-caption);color:var(--md-sys-color-on-surface-variant)"></span><span class="spacer"></span><button class="btn btn-tonal" onclick="addField()"><span class="material-symbols-outlined">add</span>Thêm trường</button></div>
+            <div class="fb-list" id="fbList"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT: live preview -->
+        <div class="pv-wrap">
+          <div class="pv-label"><span class="material-symbols-outlined" style="font-size:16px">visibility</span>Xem trước biểu mẫu công khai</div>
+          <div class="pv-card">
+            <div class="pv-title" id="pvTitle">Tạo user</div>
+            <div class="pv-sub" id="pvSub">Vui lòng hoàn thành thông tin bên dưới để gửi yêu cầu.</div>
+            <div id="pvFields"></div>
+            <button class="pv-submit">Gửi yêu cầu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var html=document.documentElement,tg=document.getElementById('themeToggle'),tico=tg.querySelector('.material-symbols-outlined');
+tg.addEventListener('click',function(){var d=html.classList.toggle('dark');html.classList.toggle('light',!d);tico.textContent=d?'light_mode':'dark_mode';});
+
+var TYPES=[['text','Văn bản ngắn','text_fields'],['textarea','Văn bản dài','notes'],['email','Email','mail'],['number','Số','tag'],['date','Ngày','calendar_today'],['select','Lựa chọn','radio_button_checked'],['checkbox','Hộp kiểm','check_box']];
+function tinfo(t){for(var i=0;i<TYPES.length;i++)if(TYPES[i][0]===t)return TYPES[i];return TYPES[0];}
+
+var FIELDS=[
+ {name:'full_name',key:'truong_i804ya',type:'text',required:true},
+ {name:'email',key:'truong_v8ypqg',type:'email',required:true},
+ {name:'phone',key:'truong_xyx3eh',type:'text',required:false},
+ {name:'role',key:'truong_llgqf',type:'select',required:true,options:['SalesAgent','Manager']},
+ {name:'status',key:'truong_st01',type:'select',required:true,options:['Active','Inactive']}
+];
+var openIdx=0;
+
+function renderList(){
+  document.getElementById('fcount').textContent=FIELDS.length+' trường';
+  document.getElementById('fbList').innerHTML=FIELDS.map(function(f,i){
+    var ti=tinfo(f.type);
+    var optBlock=(f.type==='select')?'<div class="field" style="margin-bottom:0"><label>Tùy chọn (mỗi dòng một giá trị)</label><textarea rows="3" data-i="'+i+'" data-p="options">'+((f.options||[]).join('\n'))+'</textarea></div>':'';
+    return '<div class="fb-field'+(i===openIdx?' open':'')+'" data-i="'+i+'">'
+      +'<div class="fb-h" onclick="toggleField('+i+')"><span class="fb-drag"><span class="material-symbols-outlined">drag_indicator</span></span>'
+      +'<span class="fb-tic"><span class="material-symbols-outlined">'+ti[2]+'</span></span>'
+      +'<span class="fb-nm">'+(f.name||'(chưa đặt tên)')+'</span>'
+      +'<span class="fb-ty">'+ti[1]+'</span>'
+      +(f.required?'<span class="fb-req">Bắt buộc</span>':'')
+      +'<button class="icon-btn fb-del" aria-label="Xóa" onclick="event.stopPropagation();delField('+i+')"><span class="material-symbols-outlined">delete</span></button>'
+      +'<span class="fb-chev"><span class="material-symbols-outlined">expand_more</span></span></div>'
+      +'<div class="fb-b">'
+      +'<div class="fb-grid2"><div class="field"><label>Tên trường hiển thị</label><input data-i="'+i+'" data-p="name" value="'+f.name+'"></div>'
+      +'<div class="field"><label>Mã trường (Unique Key)</label><input class="mono" data-i="'+i+'" data-p="key" value="'+f.key+'"></div></div>'
+      +'<div class="fb-grid2"><div class="field"><label>Loại dữ liệu nhập</label><select data-i="'+i+'" data-p="type">'+TYPES.map(function(t){return '<option value="'+t[0]+'" '+(t[0]===f.type?'selected':'')+'>'+t[1]+'</option>';}).join('')+'</select></div>'
+      +'<div class="field" style="justify-content:flex-end"><label class="checkrow"><input type="checkbox" data-i="'+i+'" data-p="required" '+(f.required?'checked':'')+'>Trường bắt buộc nhập</label></div></div>'
+      +optBlock
+      +'</div></div>';
+  }).join('');
+  wireInputs();
+}
+function wireInputs(){
+  document.querySelectorAll('#fbList [data-p]').forEach(function(el){
+    var ev=(el.tagName==='SELECT'||el.type==='checkbox')?'change':'input';
+    el.addEventListener(ev,function(){
+      var i=+el.getAttribute('data-i'),p=el.getAttribute('data-p');
+      if(p==='required')FIELDS[i].required=el.checked;
+      else if(p==='options')FIELDS[i].options=el.value.split('\n').filter(function(x){return x.trim();});
+      else FIELDS[i][p]=el.value;
+      if(p==='type'){renderList();}      /* đổi loại → vẽ lại để hiện/ẩn tùy chọn */
+      else if(p==='name'){ var nm=el.closest('.fb-field').querySelector('.fb-nm'); nm.textContent=el.value||'(chưa đặt tên)'; }
+      else if(p==='required'){ renderList(); }
+      renderPreview();
+    });
+  });
+}
+function toggleField(i){openIdx=(openIdx===i?-1:i);renderList();}
+function delField(i){FIELDS.splice(i,1);if(openIdx>=FIELDS.length)openIdx=-1;renderList();renderPreview();}
+function addField(){FIELDS.push({name:'truong_moi',key:'truong_'+Math.random().toString(36).slice(2,8),type:'text',required:false});openIdx=FIELDS.length-1;renderList();renderPreview();}
+
+function renderPreview(){
+  document.getElementById('pvTitle').textContent=document.getElementById('setTitle').value;
+  document.getElementById('pvSub').textContent=document.getElementById('setDesc').value;
+  document.getElementById('pvFields').innerHTML=FIELDS.map(function(f){
+    var star=f.required?' <span class="star">*</span>':'';
+    var ctrl;
+    if(f.type==='textarea')ctrl='<textarea rows="3" placeholder="Nhập '+f.name+'…"></textarea>';
+    else if(f.type==='select')ctrl=(f.options||[]).map(function(o){return '<div class="pv-opt"><span class="dot"></span>'+o+'</div>';}).join('');
+    else if(f.type==='checkbox')ctrl='<div class="pv-opt"><span class="dot" style="border-radius:4px"></span>'+f.name+'</div>';
+    else{var it=f.type==='email'?'email':(f.type==='number'?'number':(f.type==='date'?'date':'text'));ctrl='<input type="'+it+'" placeholder="Nhập '+f.name+'…">';}
+    return '<div class="pv-field"><label>'+f.name+star+'</label>'+ctrl+'</div>';
+  }).join('');
+}
+document.getElementById('setTitle').addEventListener('input',renderPreview);
+document.getElementById('setDesc').addEventListener('input',renderPreview);
+renderList();renderPreview();
+</script>
+</body>
+</html>

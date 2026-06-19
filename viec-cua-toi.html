@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XBuild ERP — Việc của tôi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+<style>
+.content.shift{transition:margin-right var(--duration-normal) var(--ease-enter)}
+.content.shift.with-drawer{margin-right:440px}
+@media (max-width:1279px){.content.shift.with-drawer{margin-right:0}.drawer{box-shadow:var(--md-sys-elevation-level4)}}
+.scrim{position:fixed;inset:0;background:color-mix(in srgb,var(--md-sys-color-scrim) 45%,transparent);opacity:0;visibility:hidden;transition:opacity var(--duration-normal);z-index:30}
+@media (max-width:1279px){.scrim.show{opacity:1;visibility:visible}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">XB</div><span class="name">XBuild ERP</span></div>
+    <div class="nav-label">Tổng quan</div>
+    <a class="nav-item" href="trang-chu.html"><span class="material-symbols-outlined">home</span><span>Trang chủ</span></a>
+    <a class="nav-item active" aria-current="page"><span class="material-symbols-outlined">check_circle</span><span>Việc của tôi</span><span class="count">5</span></a>
+    <div class="nav-label">Không gian làm việc</div>
+    <a class="nav-item" href="du-lieu.html"><span class="material-symbols-outlined">table_chart</span><span>Dữ liệu</span></a>
+    <a class="nav-item" href="workflow.html"><span class="material-symbols-outlined">account_tree</span><span>Workflow</span></a>
+    <a class="nav-item" href="bieu-mau.html"><span class="material-symbols-outlined">description</span><span>Biểu mẫu</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">folder</span><span>File</span></a>
+    <a class="nav-item"><span class="material-symbols-outlined">bar_chart</span><span>Báo cáo</span></a>
+    <div class="bottom">
+      <a class="nav-item" href="cai-dat-thanh-vien.html"><span class="material-symbols-outlined">settings</span><span>Cài đặt</span></a>
+      <a class="nav-item"><span class="material-symbols-outlined">help</span><span>Trợ giúp</span></a>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="search"><span class="material-symbols-outlined" style="font-size:18px">search</span>Tìm kiếm…<span class="kbd">Ctrl K</span></div>
+      <div class="spacer"></div>
+      <button class="btn btn-filled"><span class="material-symbols-outlined">add</span>Tạo công việc</button>
+      <button class="icon-btn" id="themeToggle" aria-label="Đổi giao diện"><span class="material-symbols-outlined">dark_mode</span></button>
+      <button class="icon-btn" aria-label="Thông báo"><span class="material-symbols-outlined">notifications</span></button>
+      <div class="avatar" aria-label="Tài khoản Phương">P</div>
+    </header>
+    <div class="content shift" id="content">
+      <div class="page-head">
+        <div><h1>Việc của tôi</h1></div>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true">Của tôi <span class="count">5</span></button>
+        <button class="tab" role="tab">Cần duyệt <span class="count">2</span></button>
+        <button class="tab" role="tab">Quá hạn <span class="count">1</span></button>
+        <button class="tab" role="tab">Tôi giao <span class="count">3</span></button>
+      </div>
+      <div class="toolbar">
+        <div class="search"><span class="material-symbols-outlined" style="font-size:18px">search</span>Tìm trong danh sách</div>
+        <div class="spacer" style="flex:1"></div>
+        <div class="seg"><button class="active">Hôm nay</button><button>Tuần này</button><button>Tất cả</button></div>
+        <button class="btn btn-text"><span class="material-symbols-outlined">filter_list</span>Lọc</button>
+        <div class="seg"><button class="active" aria-label="Dạng danh sách"><span class="material-symbols-outlined" style="font-size:18px">view_list</span></button><button aria-label="Dạng Kanban"><span class="material-symbols-outlined" style="font-size:18px">view_kanban</span></button></div>
+      </div>
+      <div class="gsheet-wrap">
+        <table class="gsheet" id="tasktable">
+          <thead><tr>
+            <th class="idx"></th>
+            <th>Công việc <span class="material-symbols-outlined">unfold_more</span></th>
+            <th style="width:160px">Trạng thái</th>
+            <th style="width:190px">Người thực hiện</th>
+          </tr></thead>
+          <tbody>
+            <tr class="selected" tabindex="0"><td class="idx">1</td><td>Duyệt hợp đồng #HD-0231</td><td><span class="badge dot"><span class="d d-error"></span>Quá hạn</span></td><td>Phương Nguyễn</td></tr>
+            <tr tabindex="0"><td class="idx">2</td><td>Gọi xác nhận khách Trần Thị B</td><td><span class="badge dot"><span class="d d-warning"></span>Chờ xử lý</span></td><td>Phương Nguyễn</td></tr>
+            <tr tabindex="0"><td class="idx">3</td><td>Chuẩn bị hồ sơ bàn giao căn A-12.05</td><td><span class="badge dot"><span class="d d-info"></span>Đang xử lý</span></td><td>Minh Trần</td></tr>
+            <tr tabindex="0"><td class="idx">4</td><td>Thu tiền đợt 2 — căn B-08.11</td><td><span class="badge dot"><span class="d d-warning"></span>Chờ xử lý</span></td><td>Phương Nguyễn</td></tr>
+            <tr tabindex="0"><td class="idx">5</td><td>Cập nhật bảng giá quý III</td><td><span class="badge dot"><span class="d d-success"></span>Hoàn thành</span></td><td>Lan Phạm</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer open" id="drawer" role="dialog" aria-modal="false" aria-labelledby="drawerTitle">
+  <div class="dh">
+    <div class="crumb">Quy trình bán hàng / Bước Chờ duyệt</div>
+    <h2 id="drawerTitle">Duyệt hợp đồng #HD-0231</h2>
+    <span class="badge dot"><span class="d d-error"></span>Quá hạn</span>
+    <button class="icon-btn" id="closeDrawer" aria-label="Đóng" style="position:absolute;top:14px;right:14px"><span class="material-symbols-outlined">close</span></button>
+    <div class="tabs" style="margin:14px 0 0">
+      <button class="tab active">Thông tin</button>
+      <button class="tab">Lịch sử</button>
+      <button class="tab">Tài liệu</button>
+    </div>
+  </div>
+  <div class="dbody">
+    <div class="field"><label>Người thực hiện</label><div class="val">Phương Nguyễn</div></div>
+    <div class="field"><label>Mô tả</label><div class="desc">Kiểm tra điều khoản giá và chiết khấu trước khi chuyển sang bước ký. Hợp đồng có yêu cầu giảm 3% đã được phê duyệt.</div></div>
+    <div class="field">
+      <label>Checklist · 1/3 hoàn thành</label>
+      <div class="progress"><i style="width:33%"></i></div>
+      <label class="check"><input type="checkbox" checked><span class="done">Đối chiếu giá niêm yết</span></label>
+      <label class="check"><input type="checkbox"><span>Xác nhận chiết khấu với kế toán</span></label>
+      <label class="check"><input type="checkbox"><span>Kiểm tra thông tin khách hàng</span></label>
+      <button class="btn btn-text" style="padding-left:0"><span class="material-symbols-outlined">add</span>Thêm mục</button>
+    </div>
+  </div>
+  <div class="dfoot">
+    <button class="btn btn-text" id="closeDrawer2">Đóng</button>
+    <button class="btn btn-success"><span class="material-symbols-outlined">check</span>Hoàn thành</button>
+  </div>
+</aside>
+<script>
+const html=document.documentElement,btn=document.getElementById('themeToggle'),ico=btn.querySelector('.material-symbols-outlined');
+btn.addEventListener('click',function(){var d=html.classList.toggle('dark');html.classList.toggle('light',!d);ico.textContent=d?'light_mode':'dark_mode';});
+const drawer=document.getElementById('drawer'),content=document.getElementById('content'),scrim=document.getElementById('scrim');
+function openDrawer(){drawer.classList.add('open');content.classList.add('with-drawer');scrim.classList.add('show');}
+function closeDrawer(){drawer.classList.remove('open');content.classList.remove('with-drawer');scrim.classList.remove('show');document.querySelectorAll('#tasktable tbody tr.selected').forEach(function(r){r.classList.remove('selected');});}
+content.classList.add('with-drawer');
+document.getElementById('closeDrawer').onclick=closeDrawer;
+document.getElementById('closeDrawer2').onclick=closeDrawer;
+scrim.onclick=closeDrawer;
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
+document.querySelectorAll('#tasktable tbody tr').forEach(function(row){
+  row.addEventListener('click',function(){document.querySelectorAll('#tasktable tbody tr.selected').forEach(function(r){r.classList.remove('selected');});row.classList.add('selected');openDrawer();});
+  row.addEventListener('keydown',function(e){if(e.key==='Enter'){row.click();}});
+});
+</script>
+</body>
+</html>
